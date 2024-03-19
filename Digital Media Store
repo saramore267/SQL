@@ -1,0 +1,51 @@
+
+--find all customers located in the Unites States. DIsplay reults in alphabetical order. 
+SELECT customers.FirstName,customers.LastName,invoices.BillingCountry
+FROM chinook.customers customers 
+LEFT JOIN chinook.invoices invoices
+ON customers.CustomerId=invoices.CustomerId
+WHERE BillingCOuntry='USA'
+GROUP BY FirstName
+ORDER BY FirstName;
+
+-- Show the Employees who are Sales Agents.
+SELECT *
+FROM chinook.employees 
+WHERE Title= 'Sales Support Agent';
+
+--Find a unique/distinct list of billing countries from the Invoice table.
+SELECT distinct BillingCOuntry 
+FROM chinook.invoices; 
+
+--Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT emp.FIrstName, emp.LastName, inv.InvoiceId
+FROM chinook.Employees emp  
+JOIN chinook.Customers cust ON cust.SupportRepId=emp.EmployeeID
+JOIN chinook.invoices inv ON inv.CustomerID=cust.CustomerID;
+
+--Show the Invoice Total, Customer name, Country, and Sales Agent name for all 
+--invoices and customers.
+
+SELECT emp.LastName, emp.FirstName, cust.FirstName, cust.LastName, cust.Country, inv.Total 
+FROM chinook.Employees emp
+JOIN chinook.Customers cust ON cust.SupportRepId = emp.EmployeeID
+JOIN chinook.Invoices inv ON inv.CustomerId = cust.CustomerId;
+
+--How many Invoices were there in 2009?
+
+
+SELECT SUM(Total)
+FROM chinook.invoices
+WHERE Invoicedate between '2009-01-01' AND '2009-12-31';
+
+--Write a query that includes the purchased 
+--track name AND artist name with each invoice line ID.
+
+SELECT ar.name as Artist, t.Name as Track, i.InvoiceLineId
+FROM chinook.Invoice_items i
+LEFT JOIN chinook.tracks t 
+ON i.TrackID=t.TrackID
+INNER JOIN chinook.albums a
+ON a.AlbumID=t.AlbumID
+LEFT JOIN chinook.artists ar
+ON ar.ArtistID=a.ArtistID;
